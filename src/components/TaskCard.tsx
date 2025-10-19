@@ -6,14 +6,13 @@ import TaskCardPopover from './TaskCardPopover';
 
 interface TaskCardProps {
   task: Task;
-  onEdit?: (task: Task) => void;
   onDelete?: (taskId: string) => void;
   onDoubleClick?: (task: Task) => void;
   onView?: (task: Task) => void;
   onCopyUrl?: (task: Task) => void;
 }
 
-export default function TaskCard({ task, onEdit, onDelete, onDoubleClick, onView, onCopyUrl }: TaskCardProps) {
+export default function TaskCard({ task, onDelete, onDoubleClick, onView, onCopyUrl }: TaskCardProps) {
   const {
     attributes,
     listeners,
@@ -61,7 +60,7 @@ export default function TaskCard({ task, onEdit, onDelete, onDoubleClick, onView
     onDoubleClick?.(task);
   };
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = () => {
     // Só processa clique se não foi um drag
     if (!isDraggingRef.current) {
       // Limpa qualquer timeout anterior
@@ -152,7 +151,7 @@ export default function TaskCard({ task, onEdit, onDelete, onDoubleClick, onView
       <div className="flex items-center justify-between">
         {/* Avatares dos usuários */}
         <div className="flex -space-x-2">
-          {task.assignedUsers.slice(0, 3).map((userId, index) => (
+          {task.assignedUsers.slice(0, 3).map((userId) => (
             <div
               key={userId}
               className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 border-2 border-white flex items-center justify-center text-xs font-medium text-white"

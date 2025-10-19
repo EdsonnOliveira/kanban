@@ -1,4 +1,4 @@
-import { XIcon, MessageCircle, Link, Calendar, User, Flag, CheckCircle, Clock, Play, Plus, AtSign, Pin, Paperclip, Bell, Send, Search, Filter, Brain } from 'lucide-react';
+import { XIcon, CheckCircle, Play, Plus, AtSign, Pin, Paperclip, Bell, Send, Search, Filter, Brain } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Task } from '../store/useTaskStore';
 

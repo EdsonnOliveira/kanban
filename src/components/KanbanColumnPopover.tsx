@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 interface KanbanColumnPopoverProps {
   isOpen: boolean;
   onClose: () => void;
-  columnTitle: string;
   onView?: () => void;
   onDelete?: () => void;
   onMoveRight?: () => void;
@@ -17,7 +16,6 @@ interface KanbanColumnPopoverProps {
 export default function KanbanColumnPopover({ 
   isOpen, 
   onClose, 
-  columnTitle,
   onView,
   onDelete,
   onMoveRight,

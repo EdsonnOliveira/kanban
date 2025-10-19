@@ -4,11 +4,10 @@ import { Task } from '../store/useTaskStore';
 interface TaskTimelineViewProps {
   tasks: Task[];
   onEdit?: (task: Task) => void;
-  onDelete?: (taskId: string) => void;
   onTaskDoubleClick?: (task: Task) => void;
 }
 
-export default function TaskTimelineView({ tasks, onEdit, onDelete, onTaskDoubleClick }: TaskTimelineViewProps) {
+export default function TaskTimelineView({ tasks, onEdit, onTaskDoubleClick }: TaskTimelineViewProps) {
   const getPriorityColor = (priority: Task['priority']) => {
     switch (priority) {
       case 'high':
@@ -87,7 +86,7 @@ export default function TaskTimelineView({ tasks, onEdit, onDelete, onTaskDouble
 
             {/* Tarefas do dia */}
             <div className="ml-12 space-y-4">
-              {groupedTasks[date].map((task, index) => (
+              {groupedTasks[date].map((task) => (
                 <div
                   key={task.id}
                   onDoubleClick={() => onTaskDoubleClick?.(task)}

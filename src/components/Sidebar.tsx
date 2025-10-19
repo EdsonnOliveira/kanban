@@ -1,9 +1,7 @@
-import { useRouter } from 'next/router';
 import OptionPage from './OptionPage';
 import { useCompanyStore, Company } from '../store/useCompanyStore';
 
 export default function Sidebar() {
-  const router = useRouter();
   const { companies, selectedCompany, setSelectedCompany } = useCompanyStore();
 
   const handleSelectCompany = (company: Company) => {

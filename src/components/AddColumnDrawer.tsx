@@ -1,5 +1,5 @@
 import { XIcon, CheckIcon, Palette } from 'lucide-react';
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from './Button';
 import Input from './Input';
 

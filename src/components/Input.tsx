@@ -1,5 +1,5 @@
 import { LucideIcon } from 'lucide-react';
-import { forwardRef } from 'react';
+import React from 'react';
 
 type InputSize = 'small' | 'middle' | 'large';
 

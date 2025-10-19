@@ -1,14 +1,13 @@
-import { MoreHorizontal, MessageCircle, Link, Calendar, User } from 'lucide-react';
+import { MoreHorizontal, MessageCircle, Link } from 'lucide-react';
 import { Task } from '../store/useTaskStore';
 
 interface TaskTableViewProps {
   tasks: Task[];
   onEdit?: (task: Task) => void;
-  onDelete?: (taskId: string) => void;
   onTaskDoubleClick?: (task: Task) => void;
 }
 
-export default function TaskTableView({ tasks, onEdit, onDelete, onTaskDoubleClick }: TaskTableViewProps) {
+export default function TaskTableView({ tasks, onEdit, onTaskDoubleClick }: TaskTableViewProps) {
   const getPriorityColor = (priority: Task['priority']) => {
     switch (priority) {
       case 'high':
@@ -124,7 +123,7 @@ export default function TaskTableView({ tasks, onEdit, onDelete, onTaskDoubleCli
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex -space-x-2">
-                      {task.assignedUsers.slice(0, 3).map((userId, index) => (
+                      {task.assignedUsers.slice(0, 3).map((userId) => (
                         <div
                           key={userId}
                           className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 border-2 border-white flex items-center justify-center text-xs font-medium text-white"

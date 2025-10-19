@@ -9,7 +9,7 @@ import { useNavigationStore } from "@/store/useNavigationStore";
 import Dashboard from "./dashboard";
 import Tarefas from "./tarefas";
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ }: AppProps) {
   const router = useRouter();
   const { selectedCompany } = useCompanyStore();
   const { currentPage } = useNavigationStore();

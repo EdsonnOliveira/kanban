@@ -7,16 +7,16 @@ import TaskTimelineView from '../components/TaskTimelineView';
 import TaskView from '../components/TaskView';
 import AddColumnDrawer from '../components/AddColumnDrawer';
 import { CheckSquare, Plus } from 'lucide-react';
-import { useTaskStore } from '../store/useTaskStore';
+import { useTaskStore, Task } from '../store/useTaskStore';
 import { useViewStore } from '../store/useViewStore';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/core';
 import { useState } from 'react';
 
 export default function Tarefas() {
-  const { getTasksByStatus, addTask, updateTask, deleteTask, moveTask, tasks } = useTaskStore();
+  const { getTasksByStatus, addTask, deleteTask, moveTask, tasks } = useTaskStore();
   const { currentView } = useViewStore();
-  const [activeTask, setActiveTask] = useState<any>(null);
-  const [selectedTask, setSelectedTask] = useState<any>(null);
+  const [activeTask, setActiveTask] = useState<Task | null>(null);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [isTaskViewOpen, setIsTaskViewOpen] = useState(false);
   const [isAddColumnDrawerOpen, setIsAddColumnDrawerOpen] = useState(false);
 
@@ -24,7 +24,7 @@ export default function Tarefas() {
   const inProgressTasks = getTasksByStatus('in-progress');
   const doneTasks = getTasksByStatus('done');
 
-  const handleAddTask = (status: 'todo' | 'in-progress' | 'done') => {
+  const handleAddTask = () => {
     const newTask = {
       title: 'Nova Tarefa',
       description: 'Descrição da nova tarefa',
@@ -34,7 +34,7 @@ export default function Tarefas() {
     addTask(newTask);
   };
 
-  const handleEditTask = (task: any) => {
+  const handleEditTask = (task: Task) => {
     // Implementar modal de edição
     console.log('Editar tarefa:', task);
   };
@@ -43,7 +43,7 @@ export default function Tarefas() {
     deleteTask(taskId);
   };
 
-  const handleTaskDoubleClick = (task: any) => {
+  const handleTaskDoubleClick = (task: Task) => {
     setSelectedTask(task);
     setIsTaskViewOpen(true);
   };
@@ -63,12 +63,12 @@ export default function Tarefas() {
     setIsAddColumnDrawerOpen(false);
   };
 
-  const handleViewTask = (task: any) => {
+  const handleViewTask = (task: Task) => {
     setSelectedTask(task);
     setIsTaskViewOpen(true);
   };
 
-  const handleCopyTaskUrl = (task: any) => {
+  const handleCopyTaskUrl = (task: Task) => {
     const url = `${window.location.origin}/tarefas?task=${task.id}`;
     navigator.clipboard.writeText(url);
     console.log('URL copiada:', url);
@@ -198,7 +198,6 @@ export default function Tarefas() {
           <TaskListView
             tasks={tasks}
             onEdit={handleEditTask}
-            onDelete={handleDeleteTask}
             onTaskDoubleClick={handleTaskDoubleClick}
           />
         );
@@ -207,7 +206,6 @@ export default function Tarefas() {
           <TaskTableView
             tasks={tasks}
             onEdit={handleEditTask}
-            onDelete={handleDeleteTask}
             onTaskDoubleClick={handleTaskDoubleClick}
           />
         );
@@ -216,7 +214,6 @@ export default function Tarefas() {
           <TaskTimelineView
             tasks={tasks}
             onEdit={handleEditTask}
-            onDelete={handleDeleteTask}
             onTaskDoubleClick={handleTaskDoubleClick}
           />
         );

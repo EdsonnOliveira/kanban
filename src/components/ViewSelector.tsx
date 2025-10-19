@@ -4,7 +4,7 @@ import { useViewStore, ViewType } from '../store/useViewStore';
 interface ViewOption {
   id: ViewType;
   label: string;
-  icon: any;
+  icon: React.ComponentType<{ size?: number }>;
 }
 
 const viewOptions: ViewOption[] = [

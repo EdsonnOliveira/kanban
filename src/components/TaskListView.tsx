@@ -4,11 +4,10 @@ import { Task } from '../store/useTaskStore';
 interface TaskListViewProps {
   tasks: Task[];
   onEdit?: (task: Task) => void;
-  onDelete?: (taskId: string) => void;
   onTaskDoubleClick?: (task: Task) => void;
 }
 
-export default function TaskListView({ tasks, onEdit, onDelete, onTaskDoubleClick }: TaskListViewProps) {
+export default function TaskListView({ tasks, onEdit, onTaskDoubleClick }: TaskListViewProps) {
   const getPriorityColor = (priority: Task['priority']) => {
     switch (priority) {
       case 'high':

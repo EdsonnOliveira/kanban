@@ -31,9 +31,7 @@ export default function KanbanColumn({
   tasks, 
   color,
   onAddTask,
-  onEditTask,
   onDeleteTask,
-  onMoveTask,
   onTaskDoubleClick,
   onTaskView,
   onTaskCopyUrl,
@@ -105,7 +103,6 @@ export default function KanbanColumn({
             <TaskCard
               key={task.id}
               task={task}
-              onEdit={onEditTask}
               onDelete={onDeleteTask}
               onDoubleClick={onTaskDoubleClick}
               onView={onTaskView}
@@ -119,7 +116,6 @@ export default function KanbanColumn({
       <KanbanColumnPopover
         isOpen={isPopoverOpen}
         onClose={() => setIsPopoverOpen(false)}
-        columnTitle={title}
         onView={() => onColumnView?.(status)}
         onDelete={() => onColumnDelete?.(status)}
         onMoveRight={() => onColumnMoveRight?.(status)}
