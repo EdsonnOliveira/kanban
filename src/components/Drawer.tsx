@@ -81,13 +81,15 @@ export default function Drawer({
       </div>
       
       {/* Content */}
-      <div className="space-y-4">
-        {title && (
-          <h2 className="text-lg font-semibold text-gray-800 mb-2">
-            {title}
-          </h2>
-        )}
-        {children}
+      <div className="flex-1 overflow-y-auto">
+        <div className="space-y-4">
+          {title && (
+            <h2 className="text-lg font-semibold text-gray-800 mb-2">
+              {title}
+            </h2>
+          )}
+          {children}
+        </div>
       </div>
     </div>
     </>

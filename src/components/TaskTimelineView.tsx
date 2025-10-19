@@ -39,7 +39,7 @@ export default function TaskTimelineView({ tasks, onEdit, onTaskDoubleClick }: T
       case 'todo':
         return 'A fazer';
       case 'in-progress':
-        return 'Em andamento';
+        return 'Andamento';
       case 'done':
         return 'Concluído';
       default:

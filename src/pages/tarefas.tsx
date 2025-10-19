@@ -136,7 +136,7 @@ export default function Tarefas() {
                 canMoveLeft={false}
               />
               <KanbanColumn
-                title="Em andamento"
+                title="Andamento"
                 status="in-progress"
                 tasks={inProgressTasks}
                 color="#F59E0B"

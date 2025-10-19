@@ -6,18 +6,217 @@ import Drawers from "../components/drawers";
 import PanelLeft from "@/components/PanelLeft";
 import { useCompanyStore } from "@/store/useCompanyStore";
 import { useNavigationStore } from "@/store/useNavigationStore";
+import { useProjectStore } from "@/store/useProjectStore";
+import { useActivityStore } from "@/store/useActivityStore";
+import { useDocumentDrawerStore } from "@/store/useDocumentDrawerStore";
+import { useClientDrawerStore } from "@/store/useClientDrawerStore";
+import { useHypothesisDrawerStore } from "@/store/useHypothesisDrawerStore";
+import { useMemberDrawerStore } from "@/store/useMemberDrawerStore";
+import { useTestDrawerStore } from "@/store/useTestDrawerStore";
+import { useEventDrawerStore } from "@/store/useEventDrawerStore";
+import { usePitchDeckDrawerStore } from "@/store/usePitchDeckDrawerStore";
+import { useBusinessModelCanvasDrawerStore } from "@/store/useBusinessModelCanvasDrawerStore";
+import { useIdealCustomerProfileDrawerStore } from "@/store/useIdealCustomerProfileDrawerStore";
+import { useSWOTDrawerStore } from "@/store/useSWOTDrawerStore";
+import { usePlanDrawerStore } from "@/store/usePlanDrawerStore";
+import { Plus } from "lucide-react";
 import Dashboard from "./dashboard";
 import Tarefas from "./tarefas";
+import Atividades from "./atividades";
+import AtividadesReunioes from "./atividades-reunioes";
+import AtividadesCronograma from "./atividades-cronograma";
+import Projetos from "./projetos";
+import ProjetosMembros from "./projetos-membros";
+import ProjetosHipoteses from "./projetos-hipoteses";
+import ProjetosTestes from "./projetos-testes";
+import Planos from "./planos";
+import PlanosIdentidade from "./planos-identidade";
+import PlanosCultura from "./planos-cultura";
+import PlanosPlanejamento from "./planos-planejamento";
+import PlanosExpressao from "./planos-expressao";
+import PlanosObjetivos from "./planos-objetivos";
+import PlanosExpressaoNova from "./planos-expressao-nova";
+import Clientes from "./clientes";
+import DocumentosPastas from "./documentos-pastas";
+import DocumentosArquivos from "./documentos-arquivos";
+import DocumentosRecentes from "./documentos-recentes";
+import FerramentasPitchDeck from "./ferramentas-pitch-deck";
+import FerramentasBusinessModelCanvas from "./ferramentas-business-model-canvas";
+import FerramentasIdealCustomerProfile from "./ferramentas-ideal-customer-profile";
+import FerramentasSWOT from "./ferramentas-swot";
 
 export default function App({ }: AppProps) {
   const router = useRouter();
   const { selectedCompany } = useCompanyStore();
   const { currentPage } = useNavigationStore();
+  const { openProjectsDrawer } = useProjectStore();
+  const { openActivitiesDrawer } = useActivityStore();
+  const { openDocumentDrawerSelector } = useDocumentDrawerStore();
+  const { openClientDrawer } = useClientDrawerStore();
+  const { openHypothesisDrawer } = useHypothesisDrawerStore();
+  const { openMemberDrawer } = useMemberDrawerStore();
+  const { openTestDrawer } = useTestDrawerStore();
+  const { openEventDrawer } = useEventDrawerStore();
+  const { openPitchDeckDrawer } = usePitchDeckDrawerStore();
+  const { openBusinessModelCanvasDrawer } = useBusinessModelCanvasDrawerStore();
+  const { openIdealCustomerProfileDrawer } = useIdealCustomerProfileDrawerStore();
+  const { openSWOTDrawer } = useSWOTDrawerStore();
+  const { openPlanDrawer } = usePlanDrawerStore();
+
+  // Função para determinar o botão de ação baseado na página atual
+  const getActionButtonForPage = (page: string) => {
+    switch (page) {
+      // Planos (todas as páginas de planos) = Novo plano
+      case 'planos':
+      case 'planos-identidade':
+      case 'planos-cultura':
+      case 'planos-planejamento':
+      case 'planos-expressao':
+      case 'planos-objetivos':
+      case 'planos-expressao-nova':
+        return {
+          icon: Plus,
+          text: "Novo Plano",
+          onClick: () => openPlanDrawer()
+        };
+      
+      // Projetos
+      case 'projetos': // geral
+        return {
+          icon: Plus,
+          text: "Novo Projeto",
+          onClick: () => openProjectsDrawer()
+        };
+      case 'projetos-hipoteses':
+        return {
+          icon: Plus,
+          text: "Nova Hipótese",
+          onClick: () => openHypothesisDrawer()
+        };
+      case 'projetos-testes':
+        return {
+          icon: Plus,
+          text: "Novo Teste",
+          onClick: () => openTestDrawer()
+        };
+      case 'projetos-membros':
+        return {
+          icon: Plus,
+          text: "Novo Membro",
+          onClick: () => openMemberDrawer()
+        };
+      
+      // Atividades
+      case 'atividades': // geral
+      case 'tarefas':
+      case 'atividades-reunioes':
+        return {
+          icon: Plus,
+          text: "Nova Atividade",
+          onClick: () => openActivitiesDrawer()
+        };
+      case 'atividades-cronograma':
+        return {
+          icon: Plus,
+          text: "Novo Evento",
+          onClick: () => openEventDrawer()
+        };
+      
+      // Documentos
+      case 'documentos-pastas':
+      case 'documentos-recentes':
+        return {
+          icon: Plus,
+          text: "Novo Documento",
+          onClick: () => openDocumentDrawerSelector()
+        };
+      
+      // Clientes
+      case 'clientes': // geral
+        return {
+          icon: Plus,
+          text: "Novo Cliente",
+          onClick: () => openClientDrawer()
+        };
+      
+      // Ferramentas
+      case 'ferramentas-pitch-deck':
+        return {
+          icon: Plus,
+          text: "Novo Pitch Deck",
+          onClick: () => openPitchDeckDrawer()
+        };
+      case 'ferramentas-business-model-canvas':
+        return {
+          icon: Plus,
+          text: "Novo Canvas",
+          onClick: () => openBusinessModelCanvasDrawer()
+        };
+      case 'ferramentas-ideal-customer-profile':
+        return {
+          icon: Plus,
+          text: "Novo ICP",
+          onClick: () => openIdealCustomerProfileDrawer()
+        };
+      case 'ferramentas-swot':
+        return {
+          icon: Plus,
+          text: "Nova Análise",
+          onClick: () => openSWOTDrawer()
+        };
+      default:
+        return null;
+    }
+  };
 
   const renderCurrentPage = () => {
     switch (currentPage) {
       case 'tarefas':
         return <Tarefas />;
+      case 'atividades':
+        return <Atividades />;
+      case 'atividades-reunioes':
+        return <AtividadesReunioes />;
+      case 'atividades-cronograma':
+        return <AtividadesCronograma />;
+      case 'projetos':
+        return <Projetos />;
+      case 'projetos-membros':
+        return <ProjetosMembros />;
+      case 'projetos-hipoteses':
+        return <ProjetosHipoteses />;
+      case 'projetos-testes':
+        return <ProjetosTestes />;
+      case 'planos':
+        return <Planos />;
+      case 'planos-identidade':
+        return <PlanosIdentidade />;
+      case 'planos-cultura':
+        return <PlanosCultura />;
+      case 'planos-planejamento':
+        return <PlanosPlanejamento />;
+      case 'planos-expressao':
+        return <PlanosExpressao />;
+      case 'planos-objetivos':
+        return <PlanosObjetivos />;
+      case 'planos-expressao-nova':
+        return <PlanosExpressaoNova />;
+      case 'clientes':
+        return <Clientes />;
+      case 'documentos-pastas':
+        return <DocumentosPastas />;
+      case 'documentos-arquivos':
+        return <DocumentosArquivos />;
+      case 'documentos-recentes':
+        return <DocumentosRecentes />;
+      case 'ferramentas-pitch-deck':
+        return <FerramentasPitchDeck />;
+      case 'ferramentas-business-model-canvas':
+        return <FerramentasBusinessModelCanvas />;
+      case 'ferramentas-ideal-customer-profile':
+        return <FerramentasIdealCustomerProfile />;
+      case 'ferramentas-swot':
+        return <FerramentasSWOT />;
       case 'dashboard':
       default:
         return <Dashboard />;
@@ -33,7 +232,9 @@ export default function App({ }: AppProps) {
         {selectedCompany && (
           <PanelLeft
             title={selectedCompany?.name}
-            buttonText="+ Novo membro"
+            buttonText={getActionButtonForPage(currentPage)?.text || "+ Novo membro"}
+            buttonIcon={getActionButtonForPage(currentPage)?.icon}
+            buttonOnClick={getActionButtonForPage(currentPage)?.onClick}
           />
         )}
         {renderCurrentPage()}

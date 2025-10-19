@@ -1,6 +1,7 @@
 import { LucideIcon } from 'lucide-react';
 
 type ButtonSize = 'small' | 'middle' | 'large';
+type ButtonVariant = 'rounded' | 'square';
 
 interface ButtonProps {
   text?: string;
@@ -10,6 +11,7 @@ interface ButtonProps {
   rightIcon?: LucideIcon;
   rightIconClassName?: string;
   size?: ButtonSize;
+  variant?: ButtonVariant;
 }
 
 export default function Button({ 
@@ -19,7 +21,8 @@ export default function Button({
   leftIcon: LeftIcon,
   rightIcon: RightIcon,
   rightIconClassName = "text-blue-400",
-  size = "middle"
+  size = "middle",
+  variant = "rounded"
 }: ButtonProps) {
   const getSizeClasses = (size: ButtonSize) => {
     switch (size) {
@@ -47,9 +50,20 @@ export default function Button({
     }
   };
 
+  const getVariantClasses = (variant: ButtonVariant) => {
+    switch (variant) {
+      case 'rounded':
+        return 'rounded-full';
+      case 'square':
+        return 'rounded-lg';
+      default:
+        return 'rounded-full';
+    }
+  };
+
   return (
     <button 
-      className={`cursor-pointer w-full ${getSizeClasses(size)} bg-gray-900 hover:bg-gray-800 rounded-full flex items-center justify-center gap-2 text-white font-regular transition-colors ${className}`}
+      className={`cursor-pointer w-full ${getSizeClasses(size)} bg-gray-900 hover:bg-gray-800 ${getVariantClasses(variant)} flex items-center justify-center gap-2 text-white font-regular transition-colors ${className}`}
       onClick={onClick}
     >
       {LeftIcon && <LeftIcon size={getIconSize(size)} />}
