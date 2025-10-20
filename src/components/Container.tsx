@@ -19,8 +19,8 @@ export default function Container({
   hiddeBanner = false
 }: ContainerProps) {
   return (
-    <div className={`flex-1 flex flex-col rounded-3xl border border-gray-200 ${className}`}>
-      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+    <div className={`flex-1 flex flex-col rounded-3xl border-none md:border border-gray-200 ${className}`}>
+      <div className="flex-1 overflow-y-auto p-0 md:p-4 flex flex-col gap-4">
         {!hiddeBanner && (
         <div className="flex flex-col gap-4 items-center justify-center bg-gradient-to-t from-white to-[#EDF6FF] w-full h-96 rounded-3xl">
           <div className="flex items-center mb-2 justify-center bg-white p-6 rounded-3xl shadow-lg transform rotate-45">

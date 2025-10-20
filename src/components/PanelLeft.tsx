@@ -26,7 +26,7 @@ import {
   Star,
   LayoutDashboard
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from './Button';
 import Stroke from './Stroke';
 import Option from './Option';
@@ -156,6 +156,33 @@ export default function PanelLeft({
     list.reduce((acc, _, index) => ({ ...acc, [index]: true }), {})
   );
 
+  const [collapsed, setCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Colapsar automaticamente em telas móveis (menores que 640px)
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const mq = window.matchMedia('(max-width: 639px)');
+    const apply = (e: MediaQueryList | MediaQueryListEvent) => {
+      const matches = 'matches' in e ? (e as MediaQueryListEvent).matches : (e as MediaQueryList).matches;
+      setIsMobile(matches);
+      // Quando for mobile, manter colapsado
+      setCollapsed(matches);
+    };
+    // Estado inicial
+    apply(mq);
+    // Escutar mudanças
+    mq.addEventListener?.('change', apply);
+    // Fallback para navegadores antigos
+    // @ts-ignore
+    mq.addListener?.(apply);
+    return () => {
+      mq.removeEventListener?.('change', apply);
+      // @ts-ignore
+      mq.removeListener?.(apply);
+    };
+  }, []);
+
   const toggleSection = (sectionIndex: number) => {
     setExpandedSections(prev => ({
       ...prev,
@@ -163,89 +190,134 @@ export default function PanelLeft({
     }));
   };
 
+  const flatOptions = list.flatMap(section =>
+    section.list.map(option => ({
+      ...option,
+      sectionTitle: section.title
+    }))
+  );
+
   return (
-    <div className="w-64 sm:w-72 lg:w-80 h-full p-2 sm:p-3 bg-gradient-to-br from-white to-[#EDF6FF] rounded-2xl sm:rounded-3xl flex flex-col">
+    <div className={`${collapsed ? 'w-16 sm:w-20' : 'w-64 sm:w-72 lg:w-80'} w-full h-16 md:h-full p-2 sm:p-3 bg-gradient-to-br from-white to-[#EDF6FF] rounded-2xl sm:rounded-3xl flex flex-row md:flex-col`}>
       {/* Cabeçalho fixo */}
       <div className="flex-shrink-0">
-        <div className="flex items-center gap-1 sm:gap-2">
-          <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-100 rounded-full flex items-center justify-center">
+        <div className="hidden md:flex items-center gap-1 sm:gap-2">
+          <button
+            onClick={() => setCollapsed(prev => !prev)}
+            className={`w-6 h-6 sm:w-8 sm:h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors ${collapsed && 'ml-2'}`}
+            title={collapsed ? 'Expandir' : 'Colapsar'}
+          >
             <PanelLeftIcon size={12} className="sm:w-4 sm:h-4" />
-          </div>
-          <h1 className="font-semibold text-sm sm:text-base truncate">{title}</h1>
+          </button>
+          {!collapsed && (
+            <h1 className="font-semibold text-sm sm:text-base truncate">{title}</h1>
+          )}
         </div>
-        <Button
-          leftIcon={buttonIcon}
-          className="mt-3 sm:mt-4"
-          text={buttonText}
-          onClick={buttonOnClick}
-          size="small"
-        />
+        {!collapsed && (
+          <Button
+            leftIcon={buttonIcon}
+            className="hidden md:flex mt-3 sm:mt-4"
+            text={buttonText}
+            onClick={buttonOnClick}
+            size="small"
+          />
+        )}
         <Stroke className="my-3 sm:my-4" />
       </div>
 
       {/* Área com scroll */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="space-y-3 sm:space-y-4">
-          <Option
-            icon={LayoutDashboard}
-            text="Dashboard"
-            page="dashboard"
-          />
-          {list.map((section, sectionIndex) => (
-            <div key={sectionIndex} className="space-y-2 sm:space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1 sm:gap-2">
-                  <button
-                    onClick={() => toggleSection(sectionIndex)}
-                    className="flex items-center gap-1 hover:bg-gray-100 rounded-md p-1 transition-colors"
-                  >
-                    <ChevronDown 
-                      size={12} 
-                      className={`text-gray-500 transition-transform duration-200 sm:w-3.5 sm:h-3.5 ${
-                        expandedSections[sectionIndex] ? 'rotate-0' : '-rotate-90'
-                      }`}
-                    />
-                    <h2 className="text-xs sm:text-sm font-medium text-gray-700">{section.title}</h2>
-                  </button>
-                </div>
-                {section.actionButton && (
-                  <button 
-                    onClick={section.actionButton.onClick}
-                    className="cursor-pointer text-white w-5 h-5 sm:w-6 sm:h-6 bg-gray-900 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
-                    title={section.actionButton.text}
-                  >
-                    <section.actionButton.icon size={10} className="sm:w-3 sm:h-3" />
-                  </button>
+      {collapsed && isMobile ? (
+        <div className="flex-1 w-full h-10 overflow-x-auto overflow-y-hidden">
+          <div className="w-max h-10 flex flex-row items-center gap-2">
+            <Option
+              icon={LayoutDashboard}
+              text="Dashboard"
+              page="dashboard"
+              collapsed
+            />
+            {flatOptions.map((opt, idx) => (
+              <Option
+                key={`${opt.sectionTitle}-${opt.text}-${idx}`}
+                icon={opt.icon}
+                text={`${opt.sectionTitle} - ${opt.text}`}
+                page={opt.page}
+                collapsed
+              />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="flex-1 overflow-y-auto">
+          <div className="space-y-3 sm:space-y-4">
+            <Option
+              icon={LayoutDashboard}
+              text="Dashboard"
+              page="dashboard"
+              collapsed={collapsed}
+            />
+            {list.map((section, sectionIndex) => (
+              <div key={sectionIndex} className="space-y-2 sm:space-y-3">
+                {!collapsed ? (
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1 sm:gap-2">
+                      <button
+                        onClick={() => toggleSection(sectionIndex)}
+                        className="flex items-center gap-1 hover:bg-gray-100 rounded-md p-1 transition-colors"
+                      >
+                        <ChevronDown 
+                          size={12} 
+                          className={`text-gray-500 transition-transform duration-200 sm:w-3.5 sm:h-3.5 ${
+                            expandedSections[sectionIndex] ? 'rotate-0' : '-rotate-90'
+                          }`}
+                        />
+                        <h2 className="text-xs sm:text-sm font-medium text-gray-700">{section.title}</h2>
+                      </button>
+                    </div>
+                    {section.actionButton && (
+                      <button 
+                        onClick={section.actionButton.onClick}
+                        className="cursor-pointer text-white w-5 h-5 sm:w-6 sm:h-6 bg-gray-900 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
+                        title={section.actionButton.text}
+                      >
+                        <section.actionButton.icon size={10} className="sm:w-3 sm:h-3" />
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <div className="w-2 h-1" />
+                )}
+                
+                {expandedSections[sectionIndex] && (
+                  <div className="space-y-2"> 
+                    {section.list.map((option, optionIndex) => (
+                      <Option 
+                        key={optionIndex}
+                        icon={option.icon}
+                        text={!collapsed ? option.text : `${section.title} - ${option.text}`}
+                        page={option.page}
+                        collapsed={collapsed}
+                      />
+                    ))}
+                  </div>
                 )}
               </div>
-              
-              {expandedSections[sectionIndex] && (
-                <div className="space-y-2"> 
-                  {section.list.map((option, optionIndex) => (
-                    <Option 
-                      key={optionIndex}
-                      icon={option.icon} 
-                      text={option.text} 
-                      page={option.page}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Rodapé fixo */}
-      <div className="flex-shrink-0 flex flex-col gap-1 sm:gap-2">
+      <div className="flex-shrink-0 flex flex-row md:flex-col gap-1 sm:gap-2">
         <Stroke className="my-3 sm:my-4" />
         <Option
           icon={Settings}
           text="Configurações"
+          collapsed={collapsed}
         />
         <Option
           icon={HelpCircle}
           text="Ajuda & Suporte"
+          collapsed={collapsed}
         />
       </div>
     </div>

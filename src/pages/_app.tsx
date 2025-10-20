@@ -226,9 +226,9 @@ export default function App({ }: AppProps) {
   const showSidebar = router.pathname !== "/";
 
   return (
-    <div className="h-screen w-screen bg-[#E8F2FE] flex">
+    <div className="h-screen w-screen bg-[#E8F2FE] flex flex-col md:flex-row">
       {showSidebar && <Sidebar />}
-      <div className="w-full h-[calc(100vh-2rem)] flex gap-4 bg-white m-4 ml-0 p-4 rounded-3xl text-black shadow-xs">
+      <div className="w-full h-[calc(100vh-2rem)] flex flex-col md:flex-row gap-4 bg-white m-4 ml-0 p-4 rounded-3xl text-black shadow-xs">
         {selectedCompany && (
           <PanelLeft
             title={selectedCompany?.name}

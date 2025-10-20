@@ -9,16 +9,15 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="w-16 sm:w-20 md:w-24 h-full flex flex-col items-center gap-2 sm:gap-3">
-      <div className="w-full h-12 sm:h-14 md:h-16 flex items-center justify-center font-bold text-black text-xs sm:text-sm md:text-base">
-        <span className="hidden sm:block">LOGO</span>
-        <span className="sm:hidden">L</span>
+    <div className="w-full sm:w-20 md:w-24 h-16 md:h-full flex flex-row md:flex-col items-center gap-2 sm:gap-3">
+      <div className="md:w-full p-4 md:p-0 h-12 sm:h-14 md:h-16 flex items-center justify-center font-bold text-black text-xs sm:text-sm md:text-base">
+        <span>LOGO</span>
       </div>
       {companies.map((company, index) => (
-        <OptionPage 
+        <OptionPage
           key={index}
-          image={company.image} 
-          label={company.name} 
+          image={company.image}
+          label={company.name}
           isActive={selectedCompany?.name === company.name}
           onClick={() => handleSelectCompany(company)}
         />
