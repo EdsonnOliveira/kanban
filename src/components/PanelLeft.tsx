@@ -163,23 +163,26 @@ export default function PanelLeft({
   useEffect(() => {
     if (typeof window === 'undefined' || !window.matchMedia) return;
     const mq = window.matchMedia('(max-width: 639px)');
-    const apply = (e: MediaQueryList | MediaQueryListEvent) => {
-      const matches = 'matches' in e ? (e as MediaQueryListEvent).matches : (e as MediaQueryList).matches;
-      setIsMobile(matches);
-      // Quando for mobile, manter colapsado
-      setCollapsed(matches);
+    const handleChange = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+      setCollapsed(e.matches);
     };
     // Estado inicial
-    apply(mq);
+    setIsMobile(mq.matches);
+    setCollapsed(mq.matches);
     // Escutar mudanças
-    mq.addEventListener?.('change', apply);
-    // Fallback para navegadores antigos
-    // @ts-ignore
-    mq.addListener?.(apply);
+    mq.addEventListener?.('change', handleChange);
+    const legacyMq: MediaQueryList & {
+      addListener?: (listener: (ev: MediaQueryListEvent) => void) => void;
+      removeListener?: (listener: (ev: MediaQueryListEvent) => void) => void;
+    } = mq as MediaQueryList & {
+      addListener?: (listener: (ev: MediaQueryListEvent) => void) => void;
+      removeListener?: (listener: (ev: MediaQueryListEvent) => void) => void;
+    };
+    legacyMq.addListener?.(handleChange);
     return () => {
-      mq.removeEventListener?.('change', apply);
-      // @ts-ignore
-      mq.removeListener?.(apply);
+      mq.removeEventListener?.('change', handleChange);
+      legacyMq.removeListener?.(handleChange);
     };
   }, []);
 

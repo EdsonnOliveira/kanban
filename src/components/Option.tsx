@@ -28,18 +28,24 @@ export default function Option({
   useEffect(() => {
     if (typeof window === 'undefined' || !window.matchMedia) return;
     const mq = window.matchMedia('(max-width: 639px)');
-    const apply = (e: MediaQueryList | MediaQueryListEvent) => {
-      const matches = 'matches' in e ? (e as MediaQueryListEvent).matches : (e as MediaQueryList).matches;
-      setIsMobile(matches);
+    const handleChange = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
     };
-    apply(mq);
-    mq.addEventListener?.('change', apply);
-    // @ts-ignore
-    mq.addListener?.(apply);
+    // Estado inicial
+    setIsMobile(mq.matches);
+    // Escutar mudanças (moderno e legado)
+    mq.addEventListener?.('change', handleChange);
+    const legacyMq: MediaQueryList & {
+      addListener?: (listener: (ev: MediaQueryListEvent) => void) => void;
+      removeListener?: (listener: (ev: MediaQueryListEvent) => void) => void;
+    } = mq as MediaQueryList & {
+      addListener?: (listener: (ev: MediaQueryListEvent) => void) => void;
+      removeListener?: (listener: (ev: MediaQueryListEvent) => void) => void;
+    };
+    legacyMq.addListener?.(handleChange);
     return () => {
-      mq.removeEventListener?.('change', apply);
-      // @ts-ignore
-      mq.removeListener?.(apply);
+      mq.removeEventListener?.('change', handleChange);
+      legacyMq.removeListener?.(handleChange);
     };
   }, []);
   
