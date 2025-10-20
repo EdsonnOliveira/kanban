@@ -45,7 +45,7 @@ import FerramentasBusinessModelCanvas from "./ferramentas-business-model-canvas"
 import FerramentasIdealCustomerProfile from "./ferramentas-ideal-customer-profile";
 import FerramentasSWOT from "./ferramentas-swot";
 
-export default function App({ }: AppProps) {
+function MainShell() {
   const router = useRouter();
   const { selectedCompany } = useCompanyStore();
   const { currentPage } = useNavigationStore();
@@ -63,10 +63,8 @@ export default function App({ }: AppProps) {
   const { openSWOTDrawer } = useSWOTDrawerStore();
   const { openPlanDrawer } = usePlanDrawerStore();
 
-  // Função para determinar o botão de ação baseado na página atual
   const getActionButtonForPage = (page: string) => {
     switch (page) {
-      // Planos (todas as páginas de planos) = Novo plano
       case 'planos':
       case 'planos-identidade':
       case 'planos-cultura':
@@ -74,96 +72,34 @@ export default function App({ }: AppProps) {
       case 'planos-expressao':
       case 'planos-objetivos':
       case 'planos-expressao-nova':
-        return {
-          icon: Plus,
-          text: "Novo Plano",
-          onClick: () => openPlanDrawer()
-        };
-      
-      // Projetos
-      case 'projetos': // geral
-        return {
-          icon: Plus,
-          text: "Novo Projeto",
-          onClick: () => openProjectsDrawer()
-        };
+        return { icon: Plus, text: "Novo Plano", onClick: () => openPlanDrawer() };
+      case 'projetos':
+        return { icon: Plus, text: "Novo Projeto", onClick: () => openProjectsDrawer() };
       case 'projetos-hipoteses':
-        return {
-          icon: Plus,
-          text: "Nova Hipótese",
-          onClick: () => openHypothesisDrawer()
-        };
+        return { icon: Plus, text: "Nova Hipótese", onClick: () => openHypothesisDrawer() };
       case 'projetos-testes':
-        return {
-          icon: Plus,
-          text: "Novo Teste",
-          onClick: () => openTestDrawer()
-        };
+        return { icon: Plus, text: "Novo Teste", onClick: () => openTestDrawer() };
       case 'projetos-membros':
-        return {
-          icon: Plus,
-          text: "Novo Membro",
-          onClick: () => openMemberDrawer()
-        };
-      
-      // Atividades
-      case 'atividades': // geral
+        return { icon: Plus, text: "Novo Membro", onClick: () => openMemberDrawer() };
+      case 'atividades':
       case 'tarefas':
       case 'atividades-reunioes':
-        return {
-          icon: Plus,
-          text: "Nova Atividade",
-          onClick: () => openActivitiesDrawer()
-        };
+        return { icon: Plus, text: "Nova Atividade", onClick: () => openActivitiesDrawer() };
       case 'atividades-cronograma':
-        return {
-          icon: Plus,
-          text: "Novo Evento",
-          onClick: () => openEventDrawer()
-        };
-      
-      // Documentos
+        return { icon: Plus, text: "Novo Evento", onClick: () => openEventDrawer() };
       case 'documentos-pastas':
       case 'documentos-recentes':
-        return {
-          icon: Plus,
-          text: "Novo Documento",
-          onClick: () => openDocumentDrawerSelector()
-        };
-      
-      // Clientes
-      case 'clientes': // geral
-        return {
-          icon: Plus,
-          text: "Novo Cliente",
-          onClick: () => openClientDrawer()
-        };
-      
-      // Ferramentas
+        return { icon: Plus, text: "Novo Documento", onClick: () => openDocumentDrawerSelector() };
+      case 'clientes':
+        return { icon: Plus, text: "Novo Cliente", onClick: () => openClientDrawer() };
       case 'ferramentas-pitch-deck':
-        return {
-          icon: Plus,
-          text: "Novo Pitch Deck",
-          onClick: () => openPitchDeckDrawer()
-        };
+        return { icon: Plus, text: "Novo Pitch Deck", onClick: () => openPitchDeckDrawer() };
       case 'ferramentas-business-model-canvas':
-        return {
-          icon: Plus,
-          text: "Novo Canvas",
-          onClick: () => openBusinessModelCanvasDrawer()
-        };
+        return { icon: Plus, text: "Novo Canvas", onClick: () => openBusinessModelCanvasDrawer() };
       case 'ferramentas-ideal-customer-profile':
-        return {
-          icon: Plus,
-          text: "Novo ICP",
-          onClick: () => openIdealCustomerProfileDrawer()
-        };
+        return { icon: Plus, text: "Novo ICP", onClick: () => openIdealCustomerProfileDrawer() };
       case 'ferramentas-swot':
-        return {
-          icon: Plus,
-          text: "Nova Análise",
-          onClick: () => openSWOTDrawer()
-        };
+        return { icon: Plus, text: "Nova Análise", onClick: () => openSWOTDrawer() };
       default:
         return null;
     }
@@ -222,7 +158,7 @@ export default function App({ }: AppProps) {
         return <Dashboard />;
     }
   };
-  
+
   const showSidebar = router.pathname !== "/";
 
   return (
@@ -242,4 +178,12 @@ export default function App({ }: AppProps) {
       <Drawers />
     </div>
   );
+}
+
+export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  if (router.pathname === "/") {
+    return <Component {...pageProps} />;
+  }
+  return <MainShell />;
 }

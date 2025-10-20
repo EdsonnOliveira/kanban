@@ -12,6 +12,8 @@ interface ButtonProps {
   rightIconClassName?: string;
   size?: ButtonSize;
   variant?: ButtonVariant;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
 }
 
 export default function Button({ 
@@ -22,7 +24,9 @@ export default function Button({
   rightIcon: RightIcon,
   rightIconClassName = "text-blue-400",
   size = "middle",
-  variant = "rounded"
+  variant = "rounded",
+  type = 'button',
+  disabled = false
 }: ButtonProps) {
   const getSizeClasses = (size: ButtonSize) => {
     switch (size) {
@@ -63,7 +67,9 @@ export default function Button({
 
   return (
     <button 
-      className={`cursor-pointer w-full ${getSizeClasses(size)} bg-gray-900 hover:bg-gray-800 ${getVariantClasses(variant)} flex items-center justify-center gap-2 text-white font-regular transition-colors ${className}`}
+      type={type}
+      disabled={disabled}
+      className={`cursor-pointer w-full ${getSizeClasses(size)} bg-gray-900 hover:bg-gray-800 ${getVariantClasses(variant)} flex items-center justify-center gap-2 text-white font-regular transition-colors disabled:opacity-60 disabled:cursor-not-allowed ${className}`}
       onClick={onClick}
     >
       {LeftIcon && <LeftIcon size={getIconSize(size)} />}
