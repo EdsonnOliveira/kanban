@@ -29,8 +29,8 @@ export default function TaskListView({ tasks, onEdit, onTaskDoubleClick }: TaskL
               assignedUsers={task.assignedUsers}
               comments={task.comments}
               attachments={task.attachments}
-              onDoubleClick={(taskId) => onTaskDoubleClick?.(task)}
-              onEdit={(taskId) => onEdit?.(task)}
+              onDoubleClick={() => onTaskDoubleClick?.(task)}
+              onEdit={() => onEdit?.(task)}
             />
           ))
         )}

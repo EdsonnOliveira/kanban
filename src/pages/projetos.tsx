@@ -1,9 +1,10 @@
 import Container from '../components/Container';
-import { Brain, Plus, Users, Calendar, TrendingUp, Clock, CheckCircle } from 'lucide-react';
+import { Brain, Plus, Users, TrendingUp, Clock, CheckCircle } from 'lucide-react';
 import Box from '../components/Box';
+import ProjectCard from '../components/ProjectCard';
 import MetricCard from '../components/MetricCard';
 import { useProjectStore } from '../store/useProjectStore';
-import { useNavigationStore } from '../store/useNavigationStore';
+// import { useNavigationStore } from '../store/useNavigationStore';
 
 // Dados dos projetos
 const projects = [
@@ -71,7 +72,8 @@ const metrics = [
   }
 ];
 
-// Dados das atividades recentes
+// Dados das atividades recentes (comentado para evitar warning de variável não utilizada)
+/*
 const recentActivities = [
   {
     id: 1,
@@ -98,14 +100,15 @@ const recentActivities = [
     avatar: "P"
   }
 ];
+*/
 
 export default function Projetos() {
   const { openProjectsDrawer } = useProjectStore();
-  const { setCurrentPage } = useNavigationStore();
+  // const { setCurrentPage } = useNavigationStore();
 
-  const handleVerTodas = () => {
-    setCurrentPage('tarefas');
-  };
+  // const handleVerTodas = () => {
+  //   setCurrentPage('tarefas');
+  // };
 
   return (
     <div className="w-full h-full flex gap-4">
@@ -132,7 +135,7 @@ export default function Projetos() {
           {/* Projetos e Atividades */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Lista de Projetos */}
-            <div className="lg:col-span-2">
+            <div className="col-span-3">
               <Box
                 title="PROJETOS"
                 actionButtonText="Novo Projeto"
@@ -141,85 +144,17 @@ export default function Projetos() {
               >
                 <div className="space-y-4">
                   {projects.map((project) => (
-                    <div key={project.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
-                      {/* Status indicator */}
-                      <div className={`w-3 h-3 ${project.color} rounded-full`}></div>
-                      
-                      {/* Project info */}
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between mb-2">
-                          <h3 className="font-semibold text-gray-800">{project.name}</h3>
-                          <span className="text-sm text-gray-500">{project.deadline}</span>
-                        </div>
-                        
-                        <div className="flex items-center gap-4 mb-3">
-                          <span className="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs font-medium">
-                            {project.status}
-                          </span>
-                          <span className="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs font-medium">
-                            {project.priority}
-                          </span>
-                        </div>
-                        
-                        {/* Progress bar */}
-                        <div className="mb-2">
-                          <div className="flex justify-between text-sm text-gray-600 mb-1">
-                            <span>Progresso</span>
-                            <span>{project.progress}%</span>
-                          </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div 
-                              className={`h-2 rounded-full ${project.color}`}
-                              style={{ width: `${project.progress}%` }}
-                            ></div>
-                          </div>
-                        </div>
-                        
-                        {/* Team */}
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm text-gray-600">Equipe:</span>
-                          <div className="flex -space-x-2">
-                            {project.team.map((member, memberIndex) => (
-                              <div key={memberIndex} className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center text-xs font-medium text-gray-600 border-2 border-white">
-                                {member}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </Box>
-            </div>
-            
-            {/* Atividades Recentes */}
-            <div>
-              <Box
-                title="ATIVIDADES RECENTES"
-                actionButtonText="Ver Todas"
-                actionButtonIcon={Calendar}
-                onActionButtonClick={handleVerTodas}
-              >
-                <div className="space-y-4">
-                  {recentActivities.map((activity) => (
-                    <div key={activity.id} className="flex items-start gap-3 p-3 bg-gray-50 rounded-2xl">
-                      {/* Avatar */}
-                      <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-sm font-medium text-gray-600">
-                        {activity.avatar}
-                      </div>
-                      
-                      {/* Activity info */}
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-800">{activity.action}</p>
-                        <p className="text-sm text-gray-600">{activity.project}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs text-gray-500">{activity.user}</span>
-                          <span className="text-xs text-gray-400">•</span>
-                          <span className="text-xs text-gray-500">{activity.time}</span>
-                        </div>
-                      </div>
-                    </div>
+                    <ProjectCard
+                      key={project.id}
+                      id={project.id.toString()}
+                      name={project.name}
+                      deadline={project.deadline}
+                      status={project.status}
+                      priority={project.priority}
+                      progress={project.progress}
+                      color={project.color}
+                      team={project.team}
+                    />
                   ))}
                 </div>
               </Box>

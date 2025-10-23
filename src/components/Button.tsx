@@ -2,6 +2,7 @@ import { LucideIcon } from 'lucide-react';
 
 type ButtonSize = 'small' | 'middle' | 'large';
 type ButtonVariant = 'rounded' | 'square';
+type ButtonStyle = 'primary' | 'white';
 
 interface ButtonProps {
   text?: string;
@@ -14,6 +15,7 @@ interface ButtonProps {
   variant?: ButtonVariant;
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
+  style?: ButtonStyle;
 }
 
 export default function Button({ 
@@ -26,7 +28,8 @@ export default function Button({
   size = "middle",
   variant = "rounded",
   type = 'button',
-  disabled = false
+  disabled = false,
+  style
 }: ButtonProps) {
   const getSizeClasses = (size: ButtonSize) => {
     switch (size) {
@@ -65,11 +68,21 @@ export default function Button({
     }
   };
 
+  const getStyleClasses = () => {
+    switch (style) {
+      case 'white':
+        return 'bg-white hover:bg-gray-50 text-gray-700 border border-gray-200';
+      case 'primary':
+      default:
+        return 'bg-gray-900 hover:bg-gray-800 text-white';
+    }
+  };
+
   return (
     <button 
       type={type}
       disabled={disabled}
-      className={`cursor-pointer w-full ${getSizeClasses(size)} bg-gray-900 hover:bg-gray-800 ${getVariantClasses(variant)} flex items-center justify-center gap-2 text-white font-regular transition-colors disabled:opacity-60 disabled:cursor-not-allowed ${className}`}
+      className={`cursor-pointer w-full ${getSizeClasses(size)} ${getStyleClasses()} ${getVariantClasses(variant)} flex items-center justify-center gap-2 font-regular transition-colors disabled:opacity-60 disabled:cursor-not-allowed ${className}`}
       onClick={onClick}
     >
       {LeftIcon && <LeftIcon size={getIconSize(size)} />}

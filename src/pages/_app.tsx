@@ -10,9 +10,6 @@ import { useProjectStore } from "@/store/useProjectStore";
 import { useActivityStore } from "@/store/useActivityStore";
 import { useDocumentDrawerStore } from "@/store/useDocumentDrawerStore";
 import { useClientDrawerStore } from "@/store/useClientDrawerStore";
-import { useHypothesisDrawerStore } from "@/store/useHypothesisDrawerStore";
-import { useMemberDrawerStore } from "@/store/useMemberDrawerStore";
-import { useTestDrawerStore } from "@/store/useTestDrawerStore";
 import { useEventDrawerStore } from "@/store/useEventDrawerStore";
 import { usePitchDeckDrawerStore } from "@/store/usePitchDeckDrawerStore";
 import { useBusinessModelCanvasDrawerStore } from "@/store/useBusinessModelCanvasDrawerStore";
@@ -26,15 +23,7 @@ import Atividades from "./atividades";
 import AtividadesReunioes from "./atividades-reunioes";
 import AtividadesCronograma from "./atividades-cronograma";
 import Projetos from "./projetos";
-import ProjetosMembros from "./projetos-membros";
-import ProjetosHipoteses from "./projetos-hipoteses";
-import ProjetosTestes from "./projetos-testes";
 import Planos from "./planos";
-import PlanosIdentidade from "./planos-identidade";
-import PlanosCultura from "./planos-cultura";
-import PlanosPlanejamento from "./planos-planejamento";
-import PlanosExpressao from "./planos-expressao";
-import PlanosObjetivos from "./planos-objetivos";
 import PlanosExpressaoNova from "./planos-expressao-nova";
 import Clientes from "./clientes";
 import DocumentosPastas from "./documentos-pastas";
@@ -53,9 +42,6 @@ function MainShell() {
   const { openActivitiesDrawer } = useActivityStore();
   const { openDocumentDrawerSelector } = useDocumentDrawerStore();
   const { openClientDrawer } = useClientDrawerStore();
-  const { openHypothesisDrawer } = useHypothesisDrawerStore();
-  const { openMemberDrawer } = useMemberDrawerStore();
-  const { openTestDrawer } = useTestDrawerStore();
   const { openEventDrawer } = useEventDrawerStore();
   const { openPitchDeckDrawer } = usePitchDeckDrawerStore();
   const { openBusinessModelCanvasDrawer } = useBusinessModelCanvasDrawerStore();
@@ -66,21 +52,10 @@ function MainShell() {
   const getActionButtonForPage = (page: string) => {
     switch (page) {
       case 'planos':
-      case 'planos-identidade':
-      case 'planos-cultura':
-      case 'planos-planejamento':
-      case 'planos-expressao':
-      case 'planos-objetivos':
       case 'planos-expressao-nova':
         return { icon: Plus, text: "Novo Plano", onClick: () => openPlanDrawer() };
       case 'projetos':
         return { icon: Plus, text: "Novo Projeto", onClick: () => openProjectsDrawer() };
-      case 'projetos-hipoteses':
-        return { icon: Plus, text: "Nova Hipótese", onClick: () => openHypothesisDrawer() };
-      case 'projetos-testes':
-        return { icon: Plus, text: "Novo Teste", onClick: () => openTestDrawer() };
-      case 'projetos-membros':
-        return { icon: Plus, text: "Novo Membro", onClick: () => openMemberDrawer() };
       case 'atividades':
       case 'tarefas':
       case 'atividades-reunioes':
@@ -117,24 +92,8 @@ function MainShell() {
         return <AtividadesCronograma />;
       case 'projetos':
         return <Projetos />;
-      case 'projetos-membros':
-        return <ProjetosMembros />;
-      case 'projetos-hipoteses':
-        return <ProjetosHipoteses />;
-      case 'projetos-testes':
-        return <ProjetosTestes />;
       case 'planos':
         return <Planos />;
-      case 'planos-identidade':
-        return <PlanosIdentidade />;
-      case 'planos-cultura':
-        return <PlanosCultura />;
-      case 'planos-planejamento':
-        return <PlanosPlanejamento />;
-      case 'planos-expressao':
-        return <PlanosExpressao />;
-      case 'planos-objetivos':
-        return <PlanosObjetivos />;
       case 'planos-expressao-nova':
         return <PlanosExpressaoNova />;
       case 'clientes':

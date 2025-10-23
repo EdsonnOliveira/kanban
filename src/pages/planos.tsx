@@ -1,8 +1,17 @@
 import Container from '../components/Container';
-import { Target, Plus, Calendar, Users, TrendingUp, CheckCircle, Clock } from 'lucide-react';
+import { Target, Plus, Calendar } from 'lucide-react';
 import Box from '../components/Box';
-import MetricCard from '../components/MetricCard';
+import Button from '../components/Button';
+import DocumentTypeCard, { documentTypes } from '../components/DocumentTypeCard';
+import Modal from '../components/Modal';
+import TabBar from '../components/TabBar';
+import IdentityForm from '../components/IdentityForm';
+import CultureForm from '../components/CultureForm';
+import PlanningForm from '../components/PlanningForm';
+import ExpressionForm from '../components/ExpressionForm';
+import PDFUpload from '../components/PDFUpload';
 import { useNavigationStore } from '../store/useNavigationStore';
+import { useState } from 'react';
 
 // Dados dos planos
 const plans = [
@@ -41,7 +50,8 @@ const plans = [
   }
 ];
 
-// Dados das métricas
+// Dados das métricas (comentado para evitar warning de variável não utilizada)
+/*
 const metrics = [
   {
     title: "Planos Ativos",
@@ -72,6 +82,7 @@ const metrics = [
     color: "text-purple-600"
   }
 ];
+*/
 
 // Dados das atividades recentes
 const recentActivities = [
@@ -103,31 +114,85 @@ const recentActivities = [
 
 export default function Planos() {
   const { setCurrentPage } = useNavigationStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDocumentType, setSelectedDocumentType] = useState<{
+    title: string;
+    description: string;
+  } | null>(null);
+  const [activeTab, setActiveTab] = useState('formulario');
 
   const handleVerTodas = () => {
     setCurrentPage('tarefas');
   };
 
+  const handleDocumentTypeClick = (docType: { id: string; title: string; icon: React.ComponentType<{ size?: number; className?: string }>; color: string; route: string }) => {
+    setSelectedDocumentType({
+      title: docType.title,
+      description: getDocumentDescription(docType.id)
+    });
+    setIsModalOpen(true);
+  };
+
+  const getDocumentDescription = (id: string) => {
+    const descriptions: Record<string, string> = {
+      'identidade': 'Defina a identidade da sua empresa, incluindo missão, visão, valores e posicionamento no mercado.',
+      'cultura': 'Estabeleça a cultura organizacional, valores compartilhados e ambiente de trabalho da sua empresa.',
+      'planejamento': 'Crie planos estratégicos, objetivos e metas para o crescimento sustentável do seu negócio.',
+      'expressao': 'Desenvolva a expressão visual e comunicacional da sua marca para o mercado.'
+    };
+    return descriptions[id] || 'Configure este tipo de documento para sua empresa.';
+  };
+
+  const getFormComponent = (documentType: string) => {
+    switch (documentType) {
+      case 'identidade':
+        return <IdentityForm />;
+      case 'cultura':
+        return <CultureForm />;
+      case 'planejamento':
+        return <PlanningForm />;
+      case 'expressão':
+        return <ExpressionForm />;
+      default:
+        return <IdentityForm />;
+    }
+  };
+
+  const tabs = [
+    {
+      id: 'formulario',
+      label: 'Formulário',
+      content: selectedDocumentType ? getFormComponent(selectedDocumentType.title.toLowerCase()) : <IdentityForm />
+    },
+    {
+      id: 'anexar',
+      label: 'Anexar PDF',
+      content: <PDFUpload />
+    }
+  ];
+
   return (
     <div className="w-full h-full flex gap-4">
       <Container
         icon={Target}
-        title="Gerencie seus planos"
+        title="Escreva seu propósito..."
         description="Crie, edite e gerencie seus planos de forma simples e eficiente."
+        enableEdit={['title', 'description', 'icon', 'banner']}
       >
         <div className="flex flex-col gap-6">
-          {/* Métricas */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {metrics.map((metric, index) => (
-              <MetricCard
-                key={index}
-                title={metric.title}
-                value={metric.value}
-                change={metric.change}
-                icon={metric.icon}
-                color={metric.color}
-              />
-            ))}
+          {/* Tipos de Documento */}
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {documentTypes.map((docType) => (
+                <DocumentTypeCard
+                  key={docType.id}
+                  title={docType.title}
+                  icon={docType.icon}
+                  color={docType.color}
+                  onClick={() => handleDocumentTypeClick(docType)}
+                />
+              ))}
+            </div>
           </div>
 
           {/* Planos e Atividades */}
@@ -196,10 +261,10 @@ export default function Planos() {
             {/* Atividades Recentes */}
             <div>
               <Box
-                title="ATIVIDADES RECENTES"
-                actionButtonText="Ver Todas"
-                actionButtonIcon={Calendar}
-                onActionButtonClick={handleVerTodas}
+                title="OBJETIVOS"
+                actionButtonText="Novo Objetivo"
+                actionButtonIcon={Plus}
+                onActionButtonClick={() => console.log('Novo Objetivo clicked')}
               >
                 <div className="space-y-4">
                   {recentActivities.map((activity) => (
@@ -221,12 +286,40 @@ export default function Planos() {
                       </div>
                     </div>
                   ))}
+                  
+                  {/* Botão Ver Todas abaixo da lista */}
+                  <div className="pt-2">
+                    <Button
+                      text="Ver Todos"
+                      leftIcon={Calendar}
+                      onClick={handleVerTodas}
+                      size="small"
+                      style="white"
+                      className="w-full"
+                    />
+                  </div>
                 </div>
               </Box>
             </div>
           </div>
         </div>
       </Container>
+
+      {/* Modal */}
+      {selectedDocumentType && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title={selectedDocumentType.title}
+          description={selectedDocumentType.description}
+        >
+          <TabBar
+            tabs={tabs}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

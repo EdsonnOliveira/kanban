@@ -6,14 +6,10 @@ import {
   Settings, 
   HelpCircle,
   House,
-  Target,
   Brain,
-  BarChart3,
   MessageSquare,
-  Lightbulb,
   Users,
   Calendar,
-  TestTube,
   Video,
   CheckSquare,
   FolderOpen,
@@ -30,10 +26,10 @@ import { useEffect, useState } from 'react';
 import Button from './Button';
 import Stroke from './Stroke';
 import Option from './Option';
-import { useProjectStore } from '@/store/useProjectStore';
+// import { useProjectStore } from '@/store/useProjectStore';
 import { useActivityStore } from '@/store/useActivityStore';
 import { useDocumentDrawerStore } from '@/store/useDocumentDrawerStore';
-import { useClientDrawerStore } from '@/store/useClientDrawerStore';
+// import { useClientDrawerStore } from '@/store/useClientDrawerStore';
 
 export type ListOption = {
   icon: LucideIcon;
@@ -64,37 +60,12 @@ export default function PanelLeft({
   buttonIcon,
   buttonOnClick
 }: PanelLeftProps) {
-  const { openProjectsDrawer } = useProjectStore();
+  // const { openProjectsDrawer } = useProjectStore();
   const { openActivitiesDrawer } = useActivityStore();
   const { openDocumentDrawerSelector } = useDocumentDrawerStore();
-  const { openClientDrawer } = useClientDrawerStore();
+  // const { openClientDrawer } = useClientDrawerStore();
 
   const list: ListSection[] = [
-    {
-      title: "Planos",
-      list: [
-        { icon: House, text: "Geral", page: "planos" },
-        { icon: Target, text: "Identidade", page: "planos-identidade" },
-        { icon: Target, text: "Objetivos", page: "planos-objetivos" },
-        { icon: Brain, text: "Cultura", page: "planos-cultura" },
-        { icon: BarChart3, text: "Planejamento", page: "planos-planejamento" },
-        { icon: MessageSquare, text: "Expressão", page: "planos-expressao" }
-      ]
-    },
-    {
-      title: "Projetos",
-      list: [
-        { icon: House, text: "Geral", page: "projetos" },
-        { icon: Lightbulb, text: "Hipóteses", page: "projetos-hipoteses" },
-        { icon: TestTube, text: "Testes", page: "projetos-testes" },
-        { icon: Users, text: "Membros", page: "projetos-membros" },
-      ],
-      actionButton: {
-        icon: Plus,
-        text: "Novo Projeto",
-        onClick: () => openProjectsDrawer()
-      }
-    },
     {
       title: "Atividades",
       list: [
@@ -119,17 +90,6 @@ export default function PanelLeft({
         icon: Plus,
         text: "Novo Documento",
         onClick: () => openDocumentDrawerSelector()
-      }
-    },
-    {
-      title: "Clientes",
-      list: [
-        { icon: House, text: "Geral", page: "clientes" }
-      ],
-      actionButton: {
-        icon: Plus,
-        text: "Novo Cliente",
-        onClick: () => openClientDrawer()
       }
     },
     {
@@ -238,6 +198,24 @@ export default function PanelLeft({
               page="dashboard"
               collapsed
             />
+            <Option
+              icon={Briefcase}
+              text="Planos"
+              page="planos"
+              collapsed
+            />
+            <Option
+              icon={Brain}
+              text="Projetos"
+              page="projetos"
+              collapsed
+            />
+            <Option
+              icon={Users}
+              text="Clientes"
+              page="clientes"
+              collapsed
+            />
             {flatOptions.map((opt, idx) => (
               <Option
                 key={`${opt.sectionTitle}-${opt.text}-${idx}`}
@@ -256,6 +234,24 @@ export default function PanelLeft({
               icon={LayoutDashboard}
               text="Dashboard"
               page="dashboard"
+              collapsed={collapsed}
+            />
+            <Option
+              icon={Briefcase}
+              text="Planos"
+              page="planos"
+              collapsed={collapsed}
+            />
+            <Option
+              icon={Brain}
+              text="Projetos"
+              page="projetos"
+              collapsed={collapsed}
+            />
+            <Option
+              icon={Users}
+              text="Clientes"
+              page="clientes"
               collapsed={collapsed}
             />
             {list.map((section, sectionIndex) => (

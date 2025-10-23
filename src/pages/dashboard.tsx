@@ -157,7 +157,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Projetos Recentes */}
             <Box
-              title="PROJETOS RECENTES"
+              title="SEUS PROJETOS"
               actionButtonText="Ver Todos"
               actionButtonIcon={Plus}
               onActionButtonClick={() => handleNavigateToPage('projetos')}
@@ -206,7 +206,7 @@ export default function Dashboard() {
 
             {/* Atividades Recentes */}
             <Box
-              title="ATIVIDADES RECENTES"
+              title="SUAS ATIVIDADES"
               actionButtonText="Ver Todas"
               actionButtonIcon={Plus}
               onActionButtonClick={() => handleNavigateToPage('atividades')}
